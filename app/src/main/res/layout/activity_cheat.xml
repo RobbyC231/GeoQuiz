@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:andriod="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    andriod:layout_width="match_parent"
+    andriod:layout_height="match_parent"
+    andriod:gravity="center"
+    andriod:orientation="vertical"
+    tools:context="com.example.a744033.geoquiz.CheatActivity">
+    <TextView
+        andriod:layout_width="wrap_content"
+        andriod:layout_height="wrap_content" 
+        andriod:padding="24dp"
+        andriod:text="@string/warning_text"/>
+    <TextView
+        andriod:id="@+id/answer_text_view"
+        andriod:layout_width="wrap_content"
+        andriod:layout_height="wrap_content" 
+        andriod:padding="24dp"
+        tools:text="Answer"/>
+    <Button
+        andriod:id="@+id/show_answer_button"
+        andriod:layout_width="wrap_content"
+        andriod:layout_height="wrap_content"
+        andriod:text="@string/show_answer_button"/>
+</LinearLayout>
