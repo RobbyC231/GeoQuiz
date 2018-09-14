@@ -19,6 +19,7 @@ public class QuizActivity extends Activity {
     private static final String NUM_CORRECT_ANSWERS = "Number of correct answers";
     private static final String NUM_WRONG_ANSWERS = "Number of wrong answers";
     private static final String KEY_DID_CHEAT = "Did user cheat";
+    private static final String CHEACT_COUNT = "Cheat number left";
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -28,6 +29,8 @@ public class QuizActivity extends Activity {
     private TextView mQuestionTextView;
     private int mCorrectAnswer;
     private int mWrongAnswer;
+    private int mCheatCount=3;
+    private TextView mCheatCountDisplay;
 
 
     private Question[] mQuestionBank = new Question[]{
@@ -55,6 +58,7 @@ public class QuizActivity extends Activity {
             mCorrectAnswer = savedInstanceState.getInt(NUM_CORRECT_ANSWERS,0);
             mWrongAnswer = savedInstanceState.getInt(NUM_WRONG_ANSWERS,0);
             mIsCheater = savedInstanceState.getBoolean(KEY_DID_CHEAT);
+            mCheatCount = savedInstanceState.getInt(CHEACT_COUNT);
         }
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -108,18 +112,20 @@ public class QuizActivity extends Activity {
             }
         });
 
+        mCheatCountDisplay = findViewById(R.id.cheat_count);
+        mCheatCountDisplay.setText("Number of cheats left " + mCheatCount);
+
+
         mCheatButton = (Button) findViewById(R.id.cheat_button);
         mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //code to start cheat activity
-                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
-                Intent intent = CheatActivity.newIntent(QuizActivity.this,answerIsTrue);
-                startActivityForResult(intent, REQUEST_CODE_CHEAT);
+                    boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                    Intent intent = CheatActivity.newIntent(QuizActivity.this,answerIsTrue);
+                    startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
         });
-
-
         updateQuestion();
     }
 
@@ -133,6 +139,11 @@ public class QuizActivity extends Activity {
                 return;
             }
             mIsCheater = CheatActivity.wasAnswerShown(data);
+            mCheatCount--;
+            if(mCheatCount == 0){
+                mCheatButton.setEnabled(false);
+            }
+            mCheatCountDisplay.setText("Number of cheats left " + mCheatCount);
         }
     }
 
@@ -163,6 +174,7 @@ public class QuizActivity extends Activity {
         savedInstanceState.putInt(NUM_CORRECT_ANSWERS, mCorrectAnswer);
         savedInstanceState.putInt(NUM_WRONG_ANSWERS, mWrongAnswer);
         savedInstanceState.putBoolean(KEY_DID_CHEAT, mIsCheater);
+        savedInstanceState.putInt(CHEACT_COUNT, mCheatCount);
     }
 
     @Override
